@@ -1,0 +1,475 @@
+/*
+Name: Garo Martinez
+Lab: #10
+Section: 02
+Date: 3-28-2019
+Description: A CPU that plays 3-D Tic-Tac-Toe against the user. The program should randomly decides who goes first (computer/user). 
+			 Program knows and informs the user if an illegal move was made (cell already occupied, cell doesn't exist). 
+	 		 The program announces winner/draw.
+*/
+
+
+#include <iostream>
+#include <string>
+#include <time.h>
+#include <cstdlib>
+
+using namespace std;
+
+class TicTacToe
+{
+	public:
+	// function declarations
+	void TheBoard ();
+	bool Validity ();
+	int isOver();
+	int randomNumber();
+	bool Draw();
+	
+};
+
+//array is public so that we can change it when we need to!
+string cell[27] = {"0","1","2","3","4","5","6","7","8",
+				   "9","10","11","12","13","14","15","16","17",
+				   "18","19","20","21","22","23","24","25","26"};
+
+// ----------------------MAIN FUNCTION----------------------
+int main ( )
+{
+   TicTacToe game; 
+   
+   // variable declaration
+   int Turn = 3;
+   int Move;
+   int win=1;
+   
+   // this makes the first player random! 0 = player, 1 = CPU
+   srand(time(NULL));
+   Turn = rand()%2;
+   
+   
+	while(win==1)
+{
+	   
+   cout << "\t\t\t\t***TIC TAC TOE GAME***\n" << endl;
+   //it displays the board, then states whose turn it is, then re-displays the board with their choice.
+   
+   game.TheBoard ();
+   win=game.isOver();
+
+   if (Turn == 0 && win!=0)
+   {
+      cout << "Player turn." << endl;
+      cout << "Enter Cell Number: " << endl;
+      cin >> Move;
+
+      if (Move>27 || Move<0)
+      {
+      	cout << "Invalid option. Try again." << endl;
+      	cout << "Player Move: " << endl;
+      	cin >> Move;
+      	game.Validity();
+      	
+    	if (game.Validity()==false)
+      {
+      	cout << "Invalid option. Try again." << endl;
+      	cout << "Player Move: " << endl;
+      	cin >> Move;
+      }
+      }
+    }
+   //************************************************THIS WILL BE IMPORTANT*****************************************
+   else if (Turn == 1 && win!=0)
+   {
+	  cout << "CPU turn." << endl;
+      srand(time(NULL));
+      Move=game.randomNumber();
+      cout << "CPU chose: " << Move << endl;
+   }
+
+
+
+   // changes turns
+   
+   if(win==1)
+   {
+    switch (Turn)
+     {
+   case (0):
+      {
+		 cell[Move] = 'x';
+         Turn = 1;
+         break;
+      }
+   case (1):
+      {
+         cell[Move] = 'o';
+         Turn = 0;
+      }
+     }
+	}
+  game.TheBoard ( );
+ }
+}
+
+
+
+// ----------------------DETERMINES DRAW----------------------
+   	bool TicTacToe::Draw()
+{
+for (int i = 0; i < 27; i++) {
+        if (cell[i] != "x" && cell[i] != "o") {
+            return false;
+        										}
+    						}
+    return true;
+}
+
+
+
+// ----------------------DRAW THE BOARD----------------------
+void TicTacToe::TheBoard ( )
+{
+   cout << endl;
+   cout << cell[0] << " | " << cell[1] << " | " << cell[2] << endl;
+   cout << "--+---+--" << endl;
+   cout << cell[3] << " | " << cell[4] << " | " << cell[5] << endl;
+   cout << "--+---+--" << endl;
+   cout << cell[6] << " | " << cell[7] << " | " << cell[8] << endl;
+
+   cout << "\t" << cell[9] << "  | " << cell[10] << " | " << cell[11] << endl;
+   cout << "\t" << "---+----+---" << endl;
+   cout << "\t" << cell[12] << " | " << cell[13] << " | " << cell[14] << endl;
+   cout << "\t" << "---+----+---" << endl;
+   cout << "\t" << cell[15] << " | " << cell[16] << " | " << cell[17] << endl;
+   
+   cout << "\t\t" << cell[18] << " | " << cell[19] << " | " << cell[20] << endl;
+   cout << "\t\t" << "---+----+---" << endl;
+   cout << "\t\t" << cell[21] << " | " << cell[22] << " | " << cell[23] << endl;
+   cout << "\t\t" << "---+----+---" << endl;
+   cout << "\t\t" << cell[24] << " | " << cell[25] << " | " << cell[26] << endl;
+   cout << endl; 
+}
+
+
+//************************************************THIS WILL BE IMPORTANT*****************************************
+// ----------------------MOVE VALIDITY CHECKER----------------------
+bool TicTacToe::Validity ( )
+{
+    int Move;
+	if (cell[Move]=="x")
+	{
+			return false;
+	}
+	else if  (cell[Move]=="o")
+	{
+		return false;
+	}
+	else
+	{
+			return true;
+	}
+}
+
+
+//************************************************THIS WILL BE IMPORTANT*****************************************
+// ----------------------RANDOM NUMBER GENERATOR----------------------
+int TicTacToe::randomNumber()
+{
+    string block = "no";
+    int num;
+    srand(time(NULL));
+  
+while(block=="no")
+{
+	  num=rand()%26;
+      if(cell[num]!="x"&&cell[num]!="o")
+      {
+         block="go";
+      }
+}
+return num;
+}
+
+
+// ----------------------CHECK FOR WIN----------------------
+int TicTacToe::isOver()
+{
+    int end=1;
+    TicTacToe game;
+    game.Draw();
+    
+if(game.Draw()==true){
+	cout<<"It's a Draw!"<<endl;
+					 }
+
+else if(game.Draw()==false){
+	int win1=0, win2=0, win3=0, lose1=0, lose2=0, lose3=0;
+		// *********PLAYER WINS, GRID 1*********
+if(cell[0]=="x" && cell[1]=="x" && cell[2]=="x") // top row
+ {
+     win1=1;
+     cout<<"Player Wins Grid 1!"<<endl;
+ }
+else if(cell[3]=="x"&&cell[4]=="x" && cell[5]=="x") // middle row
+ {
+     win1=1;
+     cout<<"Player Wins Grid 1!"<<endl;
+ }
+else if(cell[6]=="x"&&cell[7]=="x" && cell[8]=="x") // bottom row
+ {
+     win1=1;
+     cout<<"Player Wins Grid 1!"<<endl;
+ }
+else if(cell[0]=="x"&&cell[3]=="x" && cell[6]=="x") // first column
+ {
+     win1=1;
+     cout<<"Player Wins Grid 1!"<<endl;
+ }
+else if(cell[1]=="x"&&cell[4]=="x" && cell[7]=="x") // middle column
+ {
+     win1=1;
+     cout<<"Player Wins Grid 1!"<<endl;
+ }
+else if(cell[2]=="x"&&cell[5]=="x" && cell[8]=="x") // last column
+ {
+     win1=1;
+     cout<<"Player Wins Grid 1!"<<endl;
+ }
+else if(cell[0]=="x"&&cell[4]=="x" && cell[8]=="x") // l->r diagonal
+ {
+     win1=1;
+     cout<<"Player Wins Grid 1!"<<endl;
+ }
+else if(cell[2]=="x"&&cell[4]=="x" && cell[6]=="x") // r->l diagonal
+ {
+     win1=1;
+     cout<<"Player Wins Grid 1!"<<endl;
+ }
+// *********PLAYER WINS, GRID 2*********
+ if(cell[9]=="x" && cell[10]=="x" && cell[11]=="x") // top row
+ {
+     win2=1;
+     cout<<"Player Wins Grid 2!"<<endl;
+ }
+else if(cell[12]=="x"&&cell[13]=="x" && cell[14]=="x") // middle row
+ {
+     win2=1;
+     cout<<"Player Wins Grid 2!"<<endl;
+ }
+else if(cell[15]=="x"&&cell[16]=="x" && cell[17]=="x") // bottom row
+ {
+     win2=1;
+     cout<<"Player Wins Grid 2!"<<endl;
+ }
+else if(cell[9]=="x"&&cell[12]=="x" && cell[15]=="x") // first column
+ {
+     win2=1;
+     cout<<"Player Wins Grid 2!"<<endl;
+ }
+else if(cell[10]=="x"&&cell[13]=="x" && cell[16]=="x") // middle column
+ {
+     win2=1;
+     cout<<"Player Wins Grid 2!"<<endl;
+ }
+else if(cell[11]=="x"&&cell[14]=="x" && cell[17]=="x") // last column
+ {
+     win2=1;
+     cout<<"Player Wins Grid 2!"<<endl;
+ }
+else if(cell[9]=="x"&&cell[13]=="x" && cell[17]=="x") // l->r diagonal
+ {
+     win2=1;
+     cout<<"Player Wins Grid 2!"<<endl;
+ }
+else if(cell[11]=="x"&&cell[13]=="x" && cell[15]=="x") // r->l diagonal
+ {
+     win2=1;
+     cout<<"Player Wins Grid 2!"<<endl;
+ }
+ // *********PLAYER WINS, GRID 3*********
+ if(cell[18]=="x" && cell[19]=="x" && cell[20]=="x") // top row
+ {
+     win3=1;
+     cout<<"Player Wins Grid 3!"<<endl;
+ }
+else if(cell[21]=="x"&&cell[22]=="x" && cell[23]=="x") // middle row
+ {
+     win3=1;
+     cout<<"Player Wins Grid 3!"<<endl;
+ }
+else if(cell[24]=="x"&&cell[25]=="x" && cell[26]=="x") // bottom row
+ {
+     win3=1;
+     cout<<"Player Wins Grid 3!"<<endl;
+ }
+else if(cell[18]=="x"&&cell[21]=="x" && cell[24]=="x") // first column
+ {
+     win3=1;
+     cout<<"Player Wins Grid 3!"<<endl;
+ }
+else if(cell[19]=="x"&&cell[22]=="x" && cell[25]=="x") // middle column
+ {
+     win3=1;
+     cout<<"Player Wins Grid 3!"<<endl;
+ }
+else if(cell[20]=="x"&&cell[23]=="x" && cell[26]=="x") // last column
+ {
+     win3=1;
+     cout<<"Player Wins Grid 3!"<<endl;
+ }
+else if(cell[18]=="x"&&cell[22]=="x" && cell[26]=="x") // l->r diagonal
+ {
+     win3=1;
+     cout<<"Player Wins Grid 3!"<<endl;
+ }
+else if(cell[20]=="x"&&cell[22]=="x" && cell[24]=="x") // r->l diagonal
+ {
+     win3=1;
+     cout<<"Player Wins Grid 3!"<<endl;
+ }
+
+
+// *********PLAYER LOSES, GRID 1*********
+if(cell[0]=="o"&&cell[1]=="o" && cell[2]=="o")
+ {
+     lose1=1;
+     cout<<"CPU Wins Grid 1!"<<endl;
+ }
+else if(cell[3]=="o"&&cell[4]=="o" && cell[5]=="o")
+ {
+     lose1=1;
+     cout<<"CPU Wins Grid 1!"<<endl;
+ }
+else if(cell[6]=="o"&&cell[7]=="o" && cell[8]=="o")
+ {
+     lose1=1;
+     cout<<"CPU Wins Grid 1!"<<endl;
+ }
+else if(cell[0]=="o"&&cell[3]=="o" && cell[6]=="o")
+ {
+     lose1=1;
+     cout<<"CPU Wins Grid 1!"<<endl;
+ }
+else if(cell[1]=="o"&&cell[4]=="o" && cell[7]=="o")
+ {
+     lose1=1;
+	 cout<<"CPU Wins Grid 1!"<<endl;
+ }
+else if(cell[2]=="o"&&cell[5]=="o" && cell[8]=="o")
+ {
+     lose1=1;
+     cout<<"CPU Wins Grid 1!"<<endl;
+ }
+else if(cell[0]=="o"&&cell[4]=="o" && cell[8]=="o")
+ {
+     lose1=1;
+     cout<<"CPU Wins Grid 1!"<<endl;
+ }
+else if(cell[2]=="o"&&cell[4]=="o" && cell[6]=="o")
+ {
+     lose1=1;
+     cout<<"CPU Wins Grid 1!"<<endl;
+ }
+ // *********PLAYER LOSES, GRID 2*********
+if(cell[9]=="o"&&cell[10]=="o" && cell[11]=="o")
+ {
+     lose2=1;
+     cout<<"CPU Wins Grid 2!"<<endl;
+ }
+else if(cell[12]=="o"&&cell[13]=="o" && cell[14]=="o")
+ {
+     lose2=1;
+     cout<<"CPU Wins Grid 2!"<<endl;
+ }
+else if(cell[15]=="o"&&cell[16]=="o" && cell[17]=="o")
+ {
+     lose2=1;
+     cout<<"CPU Wins Grid 2!"<<endl;
+ }
+else if(cell[9]=="o"&&cell[12]=="o" && cell[15]=="o")
+ {
+     lose2=1;
+     cout<<"CPU Wins Grid 2!"<<endl;
+ }
+else if(cell[10]=="o"&&cell[13]=="o" && cell[16]=="o")
+ {
+     lose2=1;
+     cout<<"CPU Wins Grid 2!"<<endl;
+ }
+else if(cell[11]=="o"&&cell[14]=="o" && cell[17]=="o")
+ {
+     lose2=1;
+     cout<<"CPU Wins Grid 2!"<<endl;
+ }
+else if(cell[9]=="o"&&cell[13]=="o" && cell[17]=="o")
+ {
+     lose2=1;
+     cout<<"CPU Wins Grid 2!"<<endl;
+ }
+else if(cell[11]=="o"&&cell[13]=="o" && cell[15]=="o")
+ {
+     lose2=1;
+     cout<<"CPU Wins Grid 2!"<<endl;
+ }
+ // *********PLAYER LOSES, GRID 3*********
+if(cell[18]=="o"&&cell[19]=="o" && cell[20]=="o")
+ {
+     lose3=1;
+     cout<<"CPU Wins Grid 3!"<<endl;
+ }
+else if(cell[21]=="o"&&cell[22]=="o" && cell[23]=="o")
+ {
+     lose3=1;
+     cout<<"CPU Wins Grid 3!"<<endl;
+ }
+else if(cell[24]=="o"&&cell[25]=="o" && cell[26]=="o")
+ {
+     lose3=1;
+     cout<<"CPU Wins Grid 3!"<<endl;
+ }
+else if(cell[18]=="o"&&cell[21]=="o" && cell[24]=="o")
+ {
+     lose3=1;
+     cout<<"CPU Wins Grid 3!"<<endl;
+ }
+else if(cell[19]=="o"&&cell[22]=="o" && cell[25]=="o")
+ {
+     lose3=1;
+     cout<<"CPU Wins Grid 3!"<<endl;
+ }
+else if(cell[20]=="o"&&cell[23]=="o" && cell[26]=="o")
+ {
+     lose3=1;
+     cout<<"CPU Wins Grid 3!"<<endl;
+ }
+else if(cell[18]=="o"&&cell[22]=="o" && cell[26]=="o")
+ {
+     lose3=1;
+     cout<<"CPU Wins Grid 3!"<<endl;
+ }
+else if(cell[20]=="o"&&cell[22]=="o" && cell[24]=="o")
+ {
+     lose3=1;
+     cout<<"CPU Wins Grid 3!"<<endl;
+ }
+
+int tally1, tally2;
+tally1 = win1+win2+win3;
+tally2 = lose1+lose2+lose3;
+
+
+if ((tally1==2 && tally2==1) || tally1==3)
+	{
+		cout << "Player wins!" << endl;
+		end=0;
+	}
+else if ((tally2==2 && tally1==1) || tally2==3)
+	{
+		cout << "CPU wins!" << endl;
+		end=0;
+	}
+}
+	
+return end;
+}

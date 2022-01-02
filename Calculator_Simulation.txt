@@ -1,0 +1,182 @@
+#include<stdio.h>
+#include<math.h>
+
+//variables 
+int Choice = 0;
+
+//function proto
+float add(float,float);
+float sub(float,float);
+float mult(float,float);
+float div(float,float);
+int mod(int,int);
+int prime(int);
+int fact(int);
+int power(int,int);
+
+
+
+int main(){
+printf("Menu:\n");
+printf("[1] Addition\n");
+printf("[2] Subtraction\n");
+printf("[3] Multiplication\n");
+printf("[4] Division\n");
+printf("[5] Modulus (Integers Only)\n");
+printf("[6] Test If Prime (Integers Only)\n");
+printf("[7] Factorial (Integers Only)\n");
+printf("[8] Raise to Power\n");
+printf("[9] See Primes Between Numbers\n");
+printf("[0] Exit Menu\n");
+	printf("Please choose an operation!:");
+	scanf("%d", &Choice);
+	
+if ( Choice == 1 ) {
+			float x, y;
+			
+			printf("\nEnter the first number:");
+			scanf("%f", &x); // first input is assigned to x
+
+			printf("\nEnter the second number:");
+			scanf("%f", &y); // second input is assigned to y
+			
+			printf("%f + %f = %f", x, y, add(x, y));
+			}
+if ( Choice == 2 ) {
+			float x, y;
+			
+			printf("\nEnter the first number:");
+			scanf("%f", &x); // first input is assigned to x
+
+			printf("\nEnter the second number:");
+			scanf("%f", &y); // second input is assigned to y
+			
+			printf("%f - %f = %f", x, y, sub(x, y));
+			return 0;}
+if ( Choice == 3 ) {
+			float x, y;
+			
+			printf("\nEnter the first number:");
+			scanf("%f", &x); // first input is assigned to x
+
+			printf("\nEnter the second number:");
+			scanf("%f", &y); // second input is assigned to y
+			
+			printf("%f * %f = %f", x, y, mult(x, y));
+			return 0;}
+if ( Choice == 4 ) {
+			float x, y;
+			
+			printf("\nEnter the first number:");
+			scanf("%f", &x); // first input is assigned to x
+
+			printf("\nEnter the second number:");
+			scanf("%f", &y); // second input is assigned to y
+			
+			printf("%f / %f = %f", x, y, div(x, y));
+			return 0;}
+if ( Choice == 5 ) {
+			float x, y;
+			
+			printf("\nEnter the first number:");
+			scanf("%f", &x); // first input is assigned to x
+
+			printf("\nEnter the second number:");
+			scanf("%f", &y); // second input is assigned to y
+			
+			printf("%f %c %f = %f", x, 37, y, sub(x, y));
+			return 0;}
+if ( Choice == 6 ) { 
+			int a;
+			
+			printf("\nEnter the number you wish to check:");
+			scanf("%d", &a);
+			
+			prime(a);}
+if ( Choice == 7 ) {
+			int a;
+			
+			printf("\nEnter the number:");
+			scanf("%d", &a);
+			
+			fact(a);}
+if ( Choice == 8 ) {
+			int x,y;
+			printf("\nEnter the number:");
+			scanf("%d", &x); // first input is assigned to x
+
+			printf("\nEnter the degree:");
+			scanf("%d", &y); // second input is assigned to y			
+			
+			int pow = power(x,y);
+			printf("%d",pow);}
+if ( Choice == 9 ) {
+			int a, b;
+			printf("\nThis only shows primes between 0 and 100.");
+			printf("\nYou wish to see primes between ");
+			scanf("%d",&a);
+			printf("and ");
+			scanf("%d", &b);
+			
+			allprimes(a,b);
+}
+	return 0;} //end program
+	
+	
+	
+// function definitions
+			float add(float x,float y) {return x+y;}
+			
+			float sub(float x,float y) {return x-y;}
+			
+			float mult(float x, float y) {return x*y;}
+			
+			float div(float x, float y) {return x/y;}
+			
+			int mod(int a, int b) {return a%b;}
+			
+			int prime(int a) {
+					int z=0;
+					int check =0;
+				for (z=2; z <= a/2; ++z) { if (a%z == 0) {check = 1;}			
+					else {if (check == 1) {printf("\nNot prime."); break;} } }
+						if (check == 0) {printf("\nPrime.");}
+					}//second "if" has to be out of the for or else it will keep printing
+					
+			int fact(int a) {
+					int z;
+					if (a<0) {printf("Factorials of negatives aren't possible.");};
+					for (z=1; z<=a; ++z)//z becomes any number between and including a
+							{a *= z;}}//you multiply z and a each loop, which is a factorial
+						
+			int power(int x,int y) { 
+					int z;
+					int ret =1 ;
+					for (z=1; z<=y; z++) {ret =ret* x;};return ret;}
+				
+				
+			int prime2(int a) {
+					int z=0;
+					int check =0;
+				for (z=2; z <= a/2; ++z) { if (a%z == 0) {check = 1;}			
+					else {if (check == 1) {return 1; break;} } }
+						if (check == 0) {return 0;}
+						}	
+				
+				
+			int allprimes(int a, int b)
+			 {
+			 
+				int myarray[100], looper, loop2, counter=0;
+				for (looper=a; looper<=b; looper++) 
+				{
+					if(prime2(looper)==0)
+					{ myarray[counter]=looper; 
+						counter++;}
+							}			
+					int number=0;
+					for (number = 0; number<counter; number++) {printf("%d ", myarray[number]);} }
+					
+					
+			
+//end function
